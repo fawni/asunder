@@ -1,13 +1,20 @@
 name: goreleaser
 
 on:
-  pull_request:
   push:
+    tags:
+      - "*"
 
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
+      - name: Import GPG Key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -20,4 +27,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --snapshot --skip-publish --skip-sign --rm-dist
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}

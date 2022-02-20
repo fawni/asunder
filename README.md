@@ -6,13 +6,13 @@
 [![Build Status](https://img.shields.io/github/workflow/status/x6r/asunder/build?logo=github)](https://github.com/x6r/asunder/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/x6r/asunder)](https://goreportcard.com/report/github.com/x6r/asunder)
 
-asunder is a pretty command-line TOTP manager.
+asunder is a small pretty command-line TOTP manager.
 
 ## Installation
 
 ### Binaries
 
-download a binary from the [releases](https://github.com/x6r/asunder/releases)
+Download a binary from the [releases](https://github.com/x6r/asunder/releases)
 page.
 
 ### Build from source

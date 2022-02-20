@@ -52,14 +52,17 @@ add:
 	check(err)
 	secret, err := database.Encrypt(key, answers.Secret)
 	check(err)
+
 	entry := &database.Entry{Username: username, Issuer: issuer, Secret: secret}
 	_, err = db.NewInsert().Model(entry).Exec(ctx)
 	if err != nil {
 		return err
 	}
 	log.Println("Done!")
+
 	var again bool
-	survey.AskOne(&survey.Confirm{Message: "Add another entry"}, &again)
+	err = survey.AskOne(&survey.Confirm{Message: "Add another entry"}, &again)
+	checkSurvey(err)
 	if again {
 		goto add
 	}

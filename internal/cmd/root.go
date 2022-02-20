@@ -117,7 +117,9 @@ func initAsunder() error {
 	}
 
 	secret := answers.Pass
-	database.InitDB()
+	if _, err := database.InitDB(); err != nil {
+		return err
+	}
 	if err := os.WriteFile(config.PathData, []byte(fmt.Sprintf(`{"key": "%s"}`, database.Hash(secret).Text)), 0644); err != nil {
 		return err
 	}

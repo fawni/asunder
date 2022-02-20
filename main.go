@@ -6,8 +6,6 @@ import (
 	"github.com/x6r/asunder/internal/cmd"
 )
 
-var Version = "dev"
-
 func init() {
 	log.SetFlags(0)
 }

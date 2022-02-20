@@ -8,6 +8,8 @@
 
 asunder is a small pretty command-line TOTP manager.
 
+![scrot](assets/scrot.png)
+
 ## Installation
 
 ### Binaries

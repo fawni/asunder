@@ -13,11 +13,13 @@ import (
 	"strings"
 )
 
+// KeyHash stores the hash in string and byte formate for accessibility.
 type KeyHash struct {
 	Text string
 	Hash []byte
 }
 
+// Hash returns a sha256 hashed secret
 func Hash(secret string) KeyHash {
 	hash := sha256.Sum256([]byte(secret))
 	return KeyHash{Text: fmt.Sprintf("%x", hash[:]), Hash: hash[:]}
@@ -25,6 +27,7 @@ func Hash(secret string) KeyHash {
 
 // gist.github.com/stupidbodo/601b68bfef3449d1b8d9
 
+// Encrypt encrypts strings using the hashed secret to be stored in the database.
 func Encrypt(key []byte, text string) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -44,6 +47,7 @@ func Encrypt(key []byte, text string) (string, error) {
 	return finalMsg, nil
 }
 
+// Decrypt is used to decrypt obtained encrypted vaules from the database.
 func Decrypt(key []byte, text string) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {

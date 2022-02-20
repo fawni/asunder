@@ -29,6 +29,7 @@ var (
 )
 
 var (
+	// RootCmd is the root command for asunder.
 	RootCmd = &coral.Command{
 		Use:   "asunder",
 		Short: "asunder is a command-line TOTP manager",

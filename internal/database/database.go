@@ -11,6 +11,7 @@ import (
 	"github.com/x6r/asunder/internal/config"
 )
 
+// Entry is a struct the holds all necessary informations for a TOTP entry.
 type Entry struct {
 	bun.BaseModel `bun:"table:asunder"`
 
@@ -20,6 +21,7 @@ type Entry struct {
 	Secret   string `survey:"secret"`
 }
 
+// InitDB returns the databse or creates it if it does not exist.
 func InitDB() (*bun.DB, error) {
 	if err := os.MkdirAll(config.PathAsunder, 0755); err != nil {
 		return nil, err

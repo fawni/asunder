@@ -23,7 +23,7 @@ var (
 )
 
 func init() {
-	RootCmd.AddCommand(deleteCmd)
+	rootCmd.AddCommand(deleteCmd)
 }
 
 func deleteEntry() {

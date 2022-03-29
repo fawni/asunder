@@ -11,7 +11,5 @@ func init() {
 }
 
 func main() {
-	if err := cmd.RootCmd.Execute(); err != nil {
-		log.Fatalln(err)
-	}
+	cmd.Execute()
 }

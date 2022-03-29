@@ -26,11 +26,8 @@ type keymap struct {
 var (
 	db  *bun.DB
 	key []byte
-)
 
-var (
-	// RootCmd is the root command for asunder.
-	RootCmd = &coral.Command{
+	rootCmd = &coral.Command{
 		Use:   "asunder",
 		Short: "asunder is a command-line TOTP manager",
 		RunE: func(cmd *coral.Command, args []string) error {
@@ -38,6 +35,23 @@ var (
 		},
 	}
 )
+
+func init() {
+	log.SetFlags(0)
+	if fileExists(config.PathDB) {
+		coral.OnInitialize(connectDB)
+	} else {
+		err := initAsunder()
+		check(err)
+		os.Exit(0)
+	}
+}
+
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatalln(err)
+	}
+}
 
 func startModel() error {
 	m, err := setupModel()
@@ -51,17 +65,6 @@ func startModel() error {
 	}
 
 	return nil
-}
-
-func init() {
-	log.SetFlags(0)
-	if fileExists(config.PathDB) {
-		coral.OnInitialize(connectDB)
-	} else {
-		err := initAsunder()
-		check(err)
-		os.Exit(0)
-	}
 }
 
 func connectDB() {

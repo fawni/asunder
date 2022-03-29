@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	RootCmd.AddCommand(addCmd)
+	rootCmd.AddCommand(addCmd)
 }
 
 func addEntry() error {

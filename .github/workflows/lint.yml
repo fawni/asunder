@@ -16,4 +16,4 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          args: --exclude "SA1019: strings.Title"
+          args: "--exclude 'SA1019: strings.Title'"

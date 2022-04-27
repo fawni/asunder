@@ -3,7 +3,6 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -40,7 +39,6 @@ var (
 )
 
 func init() {
-	log.SetFlags(0)
 	if fileExists(config.PathDB) {
 		coral.OnInitialize(connectDB)
 	} else {
@@ -52,7 +50,8 @@ func init() {
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 
@@ -90,7 +89,8 @@ func promptPassword() {
 	}, &password)
 	checkSurvey(err)
 	if database.Hash(password).Text != k.Key {
-		log.Fatalln("password does not match")
+		fmt.Println("password does not match")
+		os.Exit(1)
 	}
 
 	key = database.Hash(password).Hash
@@ -116,11 +116,12 @@ func initAsunder() error {
 		Repass string `survey:"repassword"`
 	}
 
-	log.Println("First time setup! You will be prompted for the master password everytime you use asunder.")
+	fmt.Println("First time setup! You will be prompted for the master password everytime you use asunder.")
 	err := survey.Ask(qs, &answers)
 	checkSurvey(err)
 	if answers.Pass != answers.Repass {
-		log.Fatalln("password does not match")
+		fmt.Println("password does not match")
+		os.Exit(1)
 	}
 
 	secret := answers.Pass
@@ -131,7 +132,7 @@ func initAsunder() error {
 		return err
 	}
 
-	log.Printf("Database created! use %s to start adding entries to the database.", termenv.String("asunder add").Bold())
+	fmt.Printf("Database created! use %s to start adding entries to the database.", termenv.String("asunder add").Bold())
 	return nil
 }
 

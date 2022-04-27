@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"os"
 	"strings"
 
@@ -20,16 +20,19 @@ var (
 
 func check(err error) {
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 
 func checkSurvey(err error) {
 	if err != nil {
 		if err == terminal.InterruptErr {
-			log.Fatalln("Interrupted")
+			fmt.Println("Interrupted")
+			os.Exit(1)
 		} else {
-			log.Fatalln(err)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 	}
 }
@@ -46,7 +49,8 @@ func renderEntriesTable() {
 	entries, err := getEntries()
 	check(err)
 	if len(entries) < 1 {
-		log.Fatalln("No entries found.")
+		fmt.Println("No entries found.")
+		os.Exit(1)
 	}
 
 	termenv.ClearScreen()
@@ -54,10 +58,10 @@ func renderEntriesTable() {
 	t.SetStyle(table.StyleLight)
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"ID", "Issuer", "Username"})
-	log.Println("Found the following entries:")
+	fmt.Println("Found the following entries:")
 	for _, entry := range entries {
 		t.AppendRow(table.Row{entry.ID, strings.Title(entry.Issuer), entry.Username})
 	}
 	t.Render()
-	log.Println()
+	fmt.Println()
 }

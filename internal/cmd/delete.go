@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -43,9 +42,9 @@ func deleteEntry() {
 		entry := &database.Entry{ID: id}
 		_, err := db.NewDelete().Model(entry).WherePK().Exec(ctx)
 		check(err)
-		log.Println("Done!")
+		fmt.Println("Done!")
 	} else {
-		log.Println("Cancelled!")
+		fmt.Println("Cancelled!")
 		os.Exit(0)
 	}
 }

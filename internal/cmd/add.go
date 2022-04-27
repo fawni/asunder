@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/muesli/coral"
@@ -58,7 +58,7 @@ add:
 	if err != nil {
 		return err
 	}
-	log.Println("Done!")
+	fmt.Println("Done!")
 
 	var again bool
 	err = survey.AskOne(&survey.Confirm{Message: "Add another entry"}, &again)

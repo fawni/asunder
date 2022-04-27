@@ -30,6 +30,9 @@ var (
 	rootCmd = &coral.Command{
 		Use:   "asunder",
 		Short: "asunder is a command-line TOTP manager",
+		CompletionOptions: coral.CompletionOptions{
+			DisableDefaultCmd: true,
+		},
 		RunE: func(cmd *coral.Command, args []string) error {
 			return startModel()
 		},

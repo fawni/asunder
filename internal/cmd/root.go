@@ -28,7 +28,7 @@ var (
 
 	rootCmd = &coral.Command{
 		Use:   "asunder",
-		Short: "asunder is a command-line TOTP manager",
+		Short: "asunder is a command-line totp manager",
 		CompletionOptions: coral.CompletionOptions{
 			DisableDefaultCmd: true,
 		},

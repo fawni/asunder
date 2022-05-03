@@ -6,7 +6,7 @@
 [![Build Status](https://img.shields.io/github/workflow/status/x6r/asunder/build?logo=github)](https://github.com/x6r/asunder/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/x6r/asunder)](https://goreportcard.com/report/github.com/x6r/asunder)
 
-asunder is a small pretty command-line TOTP manager.
+pretty time based one time password (TOTP) authenticator for the command-line 🍡
 
 ![scrot](assets/scrot.png)
 

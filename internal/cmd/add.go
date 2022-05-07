@@ -13,6 +13,9 @@ var (
 		Use:   "add",
 		Short: "Add an entry",
 		Long:  `The add command adds entries to the database`,
+		PreRun: func(cmd *coral.Command, args []string) {
+			connectDB()
+		},
 		RunE: func(cmd *coral.Command, args []string) error {
 			return addEntry()
 		},

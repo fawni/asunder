@@ -15,6 +15,9 @@ var (
 		Use:   "delete",
 		Short: "Delete an entry",
 		Long:  `The delete command deletes an entry from the database`,
+		PreRun: func(cmd *coral.Command, args []string) {
+			connectDB()
+		},
 		Run: func(cmd *coral.Command, args []string) {
 			deleteEntry()
 		},

@@ -32,6 +32,9 @@ var (
 		CompletionOptions: coral.CompletionOptions{
 			DisableDefaultCmd: true,
 		},
+		PreRun: func(cmd *coral.Command, args []string) {
+			connectDB()
+		},
 		RunE: func(cmd *coral.Command, args []string) error {
 			return startModel()
 		},
@@ -39,9 +42,7 @@ var (
 )
 
 func init() {
-	if fileExists(config.PathDB) {
-		coral.OnInitialize(connectDB)
-	} else {
+	if !fileExists(config.PathDB) {
 		err := initAsunder()
 		check(err)
 		os.Exit(0)

@@ -6,7 +6,7 @@
 [![Build Status](https://img.shields.io/github/workflow/status/x6r/asunder/build?logo=github)](https://github.com/x6r/asunder/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/x6r/asunder)](https://goreportcard.com/report/github.com/x6r/asunder)
 
-pretty time based one time password (TOTP) authenticator for the command-line 🍡
+A pretty, little two-factor authenticaton _(2FA)_ client for the command line. 🍡
 
 ![scrot](assets/scrot.png)
 
@@ -43,7 +43,7 @@ Delete entries:
 ## TODO
 
 - [ ] Export database
-- [ ] Import from other services
+- [ ] Import from other authenticators
 
 ## License
 

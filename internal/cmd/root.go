@@ -13,8 +13,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/muesli/coral"
 	"github.com/muesli/termenv"
-	"github.com/uptrace/bun"
-	"github.com/x6r/asunder/internal/config"
+	"github.com/x6r/asunder/internal/common"
 	"github.com/x6r/asunder/internal/database"
 )
 
@@ -23,7 +22,7 @@ type keymap struct {
 }
 
 var (
-	db  *bun.DB
+	db  *database.DB
 	key []byte
 
 	rootCmd = &coral.Command{
@@ -42,7 +41,7 @@ var (
 )
 
 func init() {
-	if !fileExists(config.PathDB) {
+	if !fileExists(common.PathDB) {
 		err := initAsunder()
 		check(err)
 		os.Exit(0)
@@ -78,7 +77,7 @@ func connectDB() {
 }
 
 func promptPassword() {
-	buf, err := os.ReadFile(config.PathData)
+	buf, err := os.ReadFile(common.PathData)
 	check(err)
 	var k struct{ Key string }
 	err = json.Unmarshal(buf, &k)
@@ -129,7 +128,7 @@ func initAsunder() error {
 	if _, err := database.InitDB(); err != nil {
 		return err
 	}
-	if err := os.WriteFile(config.PathData, []byte(fmt.Sprintf(`{"key": "%s"}`, database.Hash(secret).Text)), 0644); err != nil {
+	if err := os.WriteFile(common.PathData, []byte(fmt.Sprintf(`{"key": "%s"}`, database.Hash(secret).Text)), 0644); err != nil {
 		return err
 	}
 

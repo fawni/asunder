@@ -9,6 +9,7 @@ import (
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/muesli/termenv"
+	"github.com/x6r/asunder/internal/database"
 )
 
 const ttl = 30
@@ -46,7 +47,7 @@ func fileExists(path string) bool {
 }
 
 func renderEntriesTable() {
-	entries, err := getEntries()
+	entries, err := database.GetEntries(db, key)
 	check(err)
 	if len(entries) < 1 {
 		fmt.Println("No entries found.")

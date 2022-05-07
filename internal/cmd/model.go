@@ -117,7 +117,7 @@ func (m *model) renderStatus() string {
 }
 
 func getItems() ([]list.Item, error) {
-	entries, err := getEntries()
+	entries, err := database.GetEntries(db, key)
 	if err != nil {
 		return []list.Item{}, err
 	}
@@ -130,27 +130,4 @@ func getItems() ([]list.Item, error) {
 		items = append(items, item{id: entry.ID, code: code, username: entry.Username, issuer: entry.Issuer})
 	}
 	return items, nil
-}
-
-func getEntries() ([]database.Entry, error) {
-	var entries []database.Entry
-	err := db.NewSelect().Model(&entries).OrderExpr("id ASC").Scan(ctx)
-	if err != nil {
-		return []database.Entry{}, err
-	}
-	for i, entry := range entries {
-		entries[i].Username, err = database.Decrypt(key, entry.Username)
-		if err != nil {
-			return []database.Entry{}, err
-		}
-		entries[i].Issuer, err = database.Decrypt(key, entry.Issuer)
-		if err != nil {
-			return []database.Entry{}, err
-		}
-		entries[i].Secret, err = database.Decrypt(key, entry.Secret)
-		if err != nil {
-			return []database.Entry{}, err
-		}
-	}
-	return entries, nil
 }

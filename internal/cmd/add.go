@@ -30,17 +30,17 @@ func addEntry() error {
 	var qs = []*survey.Question{
 		{
 			Name:     "username",
-			Prompt:   &survey.Input{Message: "Enter your username ›"},
+			Prompt:   &survey.Input{Message: "Enter your username »"},
 			Validate: survey.Required,
 		},
 		{
 			Name:     "issuer",
-			Prompt:   &survey.Input{Message: "Enter the issuer name ›"},
+			Prompt:   &survey.Input{Message: "Enter the issuer name »"},
 			Validate: survey.Required,
 		},
 		{
 			Name:     "secret",
-			Prompt:   &survey.Password{Message: "Enter TOTP secret ›"},
+			Prompt:   &survey.Password{Message: "Enter TOTP secret »"},
 			Validate: survey.Required,
 		},
 	}

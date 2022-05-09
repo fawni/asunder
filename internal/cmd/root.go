@@ -85,7 +85,7 @@ func promptPassword() {
 
 	var password string
 	err = survey.AskOne(&survey.Password{
-		Message: "Enter master password ›",
+		Message: "Enter master password »",
 	}, &password)
 	checkSurvey(err)
 	if database.Hash(password).Text != k.Key {
@@ -100,12 +100,12 @@ func initAsunder() error {
 	var qs = []*survey.Question{
 		{
 			Name:     "password",
-			Prompt:   &survey.Password{Message: "Enter a master password ›"},
+			Prompt:   &survey.Password{Message: "Enter a master password »"},
 			Validate: survey.Required,
 		},
 		{
 			Name:     "repassword",
-			Prompt:   &survey.Password{Message: "Re-Enter master password ›"},
+			Prompt:   &survey.Password{Message: "Re-Enter master password »"},
 			Validate: survey.Required,
 		},
 	}

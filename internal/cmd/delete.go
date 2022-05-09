@@ -32,7 +32,7 @@ func deleteEntry() {
 	renderEntriesTable()
 	var id int
 	err := survey.AskOne(&survey.Input{
-		Message: "Enter ID to delete ›",
+		Message: "Enter ID to delete »",
 	}, &id)
 	checkSurvey(err)
 

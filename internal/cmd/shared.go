@@ -9,6 +9,7 @@ import (
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/muesli/termenv"
+	"github.com/x6r/asunder/internal/common"
 	"github.com/x6r/asunder/internal/database"
 )
 
@@ -16,7 +17,7 @@ const ttl = 30
 
 var (
 	ctx         = context.Background()
-	invalidCode = dangerForeground.Render("TOTP secret is invalid")
+	invalidCode = common.DangerForeground.Render("TOTP secret is invalid")
 )
 
 func check(err error) {

@@ -161,13 +161,13 @@ func setupModel() (model, error) {
 		}
 		m.list.AdditionalFullHelpKeys = m.list.AdditionalShortHelpKeys
 	}
-	styles.SelectedTitle = styles.SelectedTitle.Copy().Foreground(accentColor).BorderForeground(dimmedAccentColor)
-	styles.SelectedDesc = styles.SelectedTitle.Copy().Foreground(dimmedAccentColor)
-	delegate.Styles = styles
-	m.list.SetDelegate(delegate)
+	common.Styles.SelectedTitle = common.Styles.SelectedTitle.Copy().Foreground(common.AccentColor).BorderForeground(common.DimmedAccentColor)
+	common.Styles.SelectedDesc = common.Styles.SelectedTitle.Copy().Foreground(common.DimmedAccentColor)
+	common.Delegate.Styles = common.Styles
+	m.list.SetDelegate(common.Delegate)
 
-	m.list.Styles.Title = m.list.Styles.Title.Copy().Background(secondaryColor).Foreground(textColor).Bold(true)
-	m.list.Styles.FilterCursor = m.list.Styles.FilterCursor.Copy().Foreground(accentColor)
+	m.list.Styles.Title = m.list.Styles.Title.Copy().Background(common.SecondaryColor).Foreground(common.TextColor).Bold(true)
+	m.list.Styles.FilterCursor = m.list.Styles.FilterCursor.Copy().Foreground(common.AccentColor)
 
 	return m, nil
 }

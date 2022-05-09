@@ -12,6 +12,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/muesli/termenv"
 	"github.com/pquerna/otp/totp"
+	"github.com/x6r/asunder/internal/common"
 	"github.com/x6r/asunder/internal/database"
 )
 
@@ -61,7 +62,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if item.code != invalidCode {
 				err := clipboard.WriteAll(item.code)
 				if err != nil {
-					cmd = m.list.NewStatusMessage(dangerForegroundBold.Render(fmt.Sprintf("clipboard: %s", err.Error())))
+					cmd = m.list.NewStatusMessage(common.DangerForegroundBold.Render(fmt.Sprintf("clipboard: %s", err.Error())))
 					return m, cmd
 				}
 				cmd = m.list.NewStatusMessage(fmt.Sprintf("Copied %s to clipboard!", termenv.String(item.code).Bold()))
@@ -69,7 +70,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		}
 	case tea.WindowSizeMsg:
-		v, h, _, _ := appStyle.GetMargin()
+		v, h, _, _ := common.AppStyle.GetMargin()
 		h *= 4
 		v *= 4
 		m.list.SetSize(msg.Width-h, msg.Height-v)
@@ -79,7 +80,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case ttl:
 		items, err := getItems()
 		if err != nil {
-			cmd := m.list.NewStatusMessage(dangerForegroundBold.Render(err.Error()))
+			cmd := m.list.NewStatusMessage(common.DangerForegroundBold.Render(err.Error()))
 			return m, cmd
 		}
 		m.list.SetItems(items)
@@ -108,11 +109,11 @@ func (m *model) renderStatus() string {
 	sec := countdown()
 	var ttl, status string
 	if sec <= 7 {
-		ttl = dangerForegroundBold.Render(strconv.Itoa(sec) + "s")
+		ttl = common.DangerForegroundBold.Render(strconv.Itoa(sec) + "s")
 	} else {
-		ttl = accentForegroundBold.Render(strconv.Itoa(sec) + "s")
+		ttl = common.AccentForegroundBold.Render(strconv.Itoa(sec) + "s")
 	}
-	status = appStyle.Render("Expiration: " + ttl)
+	status = common.AppStyle.Render("Expiration: " + ttl)
 	return status
 }
 

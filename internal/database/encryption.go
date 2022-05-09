@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-// KeyHash stores the hash in string and byte formate for accessibility.
+// KeyHash stores the hash in string and []byte format for accessibility.
 type KeyHash struct {
 	Text string
 	Hash []byte

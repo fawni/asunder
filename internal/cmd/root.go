@@ -11,8 +11,8 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/muesli/coral"
 	"github.com/muesli/termenv"
+	"github.com/spf13/cobra"
 	"github.com/x6r/asunder/internal/common"
 	"github.com/x6r/asunder/internal/database"
 )
@@ -25,16 +25,16 @@ var (
 	db  *database.DB
 	key []byte
 
-	rootCmd = &coral.Command{
+	rootCmd = &cobra.Command{
 		Use:   "asunder",
 		Short: "asunder is a command-line totp manager",
-		CompletionOptions: coral.CompletionOptions{
+		CompletionOptions: cobra.CompletionOptions{
 			DisableDefaultCmd: true,
 		},
-		PreRun: func(cmd *coral.Command, args []string) {
+		PreRun: func(cmd *cobra.Command, args []string) {
 			connectDB()
 		},
-		RunE: func(cmd *coral.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			return startModel()
 		},
 	}

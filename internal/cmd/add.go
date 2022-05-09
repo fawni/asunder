@@ -4,19 +4,19 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/muesli/coral"
+	"github.com/spf13/cobra"
 	"github.com/x6r/asunder/internal/database"
 )
 
 var (
-	addCmd = &coral.Command{
+	addCmd = &cobra.Command{
 		Use:   "add",
 		Short: "Add an entry",
 		Long:  `The add command adds entries to the database`,
-		PreRun: func(cmd *coral.Command, args []string) {
+		PreRun: func(cmd *cobra.Command, args []string) {
 			connectDB()
 		},
-		RunE: func(cmd *coral.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			return addEntry()
 		},
 	}

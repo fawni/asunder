@@ -6,19 +6,19 @@ import (
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/muesli/coral"
+	"github.com/spf13/cobra"
 	"github.com/x6r/asunder/internal/database"
 )
 
 var (
-	deleteCmd = &coral.Command{
+	deleteCmd = &cobra.Command{
 		Use:   "delete",
 		Short: "Delete an entry",
 		Long:  `The delete command deletes an entry from the database`,
-		PreRun: func(cmd *coral.Command, args []string) {
+		PreRun: func(cmd *cobra.Command, args []string) {
 			connectDB()
 		},
-		Run: func(cmd *coral.Command, args []string) {
+		Run: func(cmd *cobra.Command, args []string) {
 			deleteEntry()
 		},
 	}

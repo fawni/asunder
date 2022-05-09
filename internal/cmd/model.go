@@ -16,56 +16,56 @@ import (
 	"github.com/x6r/asunder/internal/database"
 )
 
-type item struct {
-	id       int
-	username string
-	issuer   string
-	code     string
+type Item struct {
+	ID       int
+	Username string
+	Issuer   string
+	Code     string
 }
 
-func (i item) Title() string { return i.code }
-func (i item) Description() string {
-	return fmt.Sprintf("%s (%s)", strings.Title(i.issuer), i.username)
+func (i Item) Title() string { return i.Code }
+func (i Item) Description() string {
+	return fmt.Sprintf("%s (%s)", strings.Title(i.Issuer), i.Username)
 }
-func (i item) FilterValue() string {
-	if i.code != invalidCode {
-		return i.issuer + i.username
+func (i Item) FilterValue() string {
+	if i.Code != common.InvalidCode {
+		return i.Issuer + i.Username
 	}
 	return ""
 }
 
-type model struct {
-	list      list.Model
-	timer     timer.Model
-	countdown string
+type Model struct {
+	List      list.Model
+	Timer     timer.Model
+	Countdown string
 }
 
-func (m model) Init() tea.Cmd {
-	return tea.Batch(m.timer.Init(), tea.HideCursor)
+func (m Model) Init() tea.Cmd {
+	return tea.Batch(m.Timer.Init(), tea.HideCursor)
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case timer.TickMsg:
 		var cmd tea.Cmd
-		m.timer, cmd = m.timer.Update(msg)
+		m.Timer, cmd = m.Timer.Update(msg)
 		return m, cmd
 	case timer.TimeoutMsg:
-		m.timer.Timeout = ttl
+		m.Timer.Timeout = common.TTL
 	case tea.KeyMsg:
 		var cmd tea.Cmd
 		switch keypress := msg.String(); keypress {
 		case "ctrl+c":
 			return m, tea.Quit
 		case "enter":
-			item := m.list.SelectedItem().(item)
-			if item.code != invalidCode {
-				err := clipboard.WriteAll(item.code)
+			item := m.List.SelectedItem().(Item)
+			if item.Code != common.InvalidCode {
+				err := clipboard.WriteAll(item.Code)
 				if err != nil {
-					cmd = m.list.NewStatusMessage(common.DangerForegroundBold.Render(fmt.Sprintf("clipboard: %s", err.Error())))
+					cmd = m.List.NewStatusMessage(common.DangerForegroundBold.Render(fmt.Sprintf("clipboard: %s", err.Error())))
 					return m, cmd
 				}
-				cmd = m.list.NewStatusMessage(fmt.Sprintf("Copied %s to clipboard!", termenv.String(item.code).Bold()))
+				cmd = m.List.NewStatusMessage(fmt.Sprintf("Copied %s to clipboard!", termenv.String(item.Code).Bold()))
 				return m, cmd
 			}
 		}
@@ -73,39 +73,39 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		v, h, _, _ := common.AppStyle.GetMargin()
 		h *= 4
 		v *= 4
-		m.list.SetSize(msg.Width-h, msg.Height-v)
+		m.List.SetSize(msg.Width-h, msg.Height-v)
 	}
 
 	switch countdown() {
-	case ttl:
+	case common.TTL:
 		items, err := getItems()
 		if err != nil {
-			cmd := m.list.NewStatusMessage(common.DangerForegroundBold.Render(err.Error()))
+			cmd := m.List.NewStatusMessage(common.DangerForegroundBold.Render(err.Error()))
 			return m, cmd
 		}
-		m.list.SetItems(items)
+		m.List.SetItems(items)
 	}
 
 	var cmd tea.Cmd
-	m.list, cmd = m.list.Update(msg)
+	m.List, cmd = m.List.Update(msg)
 	return m, cmd
 }
 
-func (m model) View() string {
-	m.countdown = m.renderStatus()
-	return m.countdown + "\n" + m.list.View()
+func (m Model) View() string {
+	m.Countdown = m.renderStatus()
+	return m.Countdown + "\n" + m.List.View()
 }
 
 func countdown() int {
 	i := time.Now().Second()
-	if i >= ttl {
-		i -= ttl
+	if i >= common.TTL {
+		i -= common.TTL
 	}
-	i = ttl - i
+	i = common.TTL - i
 	return i
 }
 
-func (m *model) renderStatus() string {
+func (m *Model) renderStatus() string {
 	sec := countdown()
 	var ttl, status string
 	if sec <= 7 {
@@ -118,7 +118,7 @@ func (m *model) renderStatus() string {
 }
 
 func getItems() ([]list.Item, error) {
-	entries, err := database.GetEntries(db, key)
+	entries, err := database.GetEntries(DB, Key)
 	if err != nil {
 		return []list.Item{}, err
 	}
@@ -126,9 +126,9 @@ func getItems() ([]list.Item, error) {
 	for _, entry := range entries {
 		code, err := totp.GenerateCode(entry.Secret, time.Now())
 		if err != nil {
-			code = invalidCode
+			code = common.InvalidCode
 		}
-		items = append(items, item{id: entry.ID, code: code, username: entry.Username, issuer: entry.Issuer})
+		items = append(items, Item{ID: entry.ID, Code: code, Username: entry.Username, Issuer: entry.Issuer})
 	}
 	return items, nil
 }

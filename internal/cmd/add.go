@@ -1,10 +1,12 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
+	"github.com/x6r/asunder/internal/common"
 	"github.com/x6r/asunder/internal/database"
 )
 
@@ -48,16 +50,17 @@ func addEntry() error {
 add:
 	var answers database.Entry
 	err := survey.Ask(qs, &answers)
-	checkSurvey(err)
-	username, err := database.Encrypt(key, answers.Username)
-	check(err)
-	issuer, err := database.Encrypt(key, answers.Issuer)
-	check(err)
-	secret, err := database.Encrypt(key, answers.Secret)
-	check(err)
+	common.CheckSurvey(err)
+	username, err := database.Encrypt(Key, answers.Username)
+	common.Check(err)
+	issuer, err := database.Encrypt(Key, answers.Issuer)
+	common.Check(err)
+	secret, err := database.Encrypt(Key, answers.Secret)
+	common.Check(err)
 
+	ctx := context.Background()
 	entry := &database.Entry{Username: username, Issuer: issuer, Secret: secret}
-	_, err = db.NewInsert().Model(entry).Exec(ctx)
+	_, err = DB.NewInsert().Model(entry).Exec(ctx)
 	if err != nil {
 		return err
 	}
@@ -65,7 +68,7 @@ add:
 
 	var again bool
 	err = survey.AskOne(&survey.Confirm{Message: "Add another entry"}, &again)
-	checkSurvey(err)
+	common.CheckSurvey(err)
 	if again {
 		goto add
 	}

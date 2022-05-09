@@ -1,12 +1,16 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
+	"github.com/x6r/asunder/internal/common"
 	"github.com/x6r/asunder/internal/database"
 )
 
@@ -34,17 +38,18 @@ func deleteEntry() {
 	err := survey.AskOne(&survey.Input{
 		Message: "Enter ID to delete »",
 	}, &id)
-	checkSurvey(err)
+	common.CheckSurvey(err)
 
-	check(err)
+	common.Check(err)
 	var delete bool
 	err = survey.AskOne(&survey.Confirm{Message: fmt.Sprintf("Delete [%s]", getDescriptionById(id))}, &delete)
-	checkSurvey(err)
+	common.CheckSurvey(err)
 
 	if delete {
+		ctx := context.Background()
 		entry := &database.Entry{ID: id}
-		_, err := db.NewDelete().Model(entry).WherePK().Exec(ctx)
-		check(err)
+		_, err := DB.NewDelete().Model(entry).WherePK().Exec(ctx)
+		common.Check(err)
 		fmt.Println("Done!")
 	} else {
 		fmt.Println("Cancelled!")
@@ -53,12 +58,34 @@ func deleteEntry() {
 }
 
 func getDescriptionById(id int) string {
+	ctx := context.Background()
 	entry := new(database.Entry)
-	err := db.NewSelect().Model(entry).Where("id = ?", id).Scan(ctx)
-	check(err)
-	issuer, err := database.Decrypt(key, entry.Issuer)
-	check(err)
-	username, err := database.Decrypt(key, entry.Username)
-	check(err)
+	err := DB.NewSelect().Model(entry).Where("id = ?", id).Scan(ctx)
+	common.Check(err)
+	issuer, err := database.Decrypt(Key, entry.Issuer)
+	common.Check(err)
+	username, err := database.Decrypt(Key, entry.Username)
+	common.Check(err)
 	return fmt.Sprintf("%s - %s", strings.Title(issuer), username)
+}
+
+func renderEntriesTable() {
+	entries, err := database.GetEntries(DB, Key)
+	common.Check(err)
+	if len(entries) < 1 {
+		fmt.Println("No entries found.")
+		os.Exit(1)
+	}
+
+	termenv.ClearScreen()
+	t := table.NewWriter()
+	t.SetStyle(table.StyleLight)
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"ID", "Issuer", "Username"})
+	fmt.Println("Found the following entries:")
+	for _, entry := range entries {
+		t.AppendRow(table.Row{entry.ID, strings.Title(entry.Issuer), entry.Username})
+	}
+	t.Render()
+	fmt.Println()
 }

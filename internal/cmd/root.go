@@ -94,7 +94,6 @@ func promptPassword() {
 	}
 
 	key = database.Hash(password).Hash
-	termenv.ClearLine()
 }
 
 func initAsunder() error {

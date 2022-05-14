@@ -6,10 +6,10 @@ import (
 )
 
 const (
-	Accent      = "#ccbcff"
-	AccentDark  = "#8977C2"
-	AccentLight = "#E9E2FF"
-	Secondary   = "#FCB6D0"
+	Accent      = "#DDB6F2"
+	AccentDark  = "#A689B5"
+	AccentLight = "#E5C8F5"
+	Secondary   = "#F28FAD"
 	Text        = "#F8F8F0"
 	Danger      = "#FA827B"
 )

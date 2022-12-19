@@ -3,7 +3,7 @@
 > Asunder, Sweet and Other Distress
 
 [![Latest Release](https://img.shields.io/github/release/x6r/asunder.svg)](https://github.com/x6r/asunder/releases)
-[![Build Status](https://img.shields.io/github/workflow/status/x6r/asunder/build?logo=github)](https://github.com/x6r/asunder/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/x6r/asunder/build.yml?logo=github&branch=master)](https://github.com/x6r/asunder/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/x6r/asunder)](https://goreportcard.com/report/github.com/x6r/asunder)
 
 A pretty, little two-factor authenticaton _(2FA)_ client for the command line. 🍡

@@ -58,6 +58,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c":
 			return m, tea.Quit
 		case "enter":
+			if m.List.SelectedItem() == nil {
+				break
+			}
 			item := m.List.SelectedItem().(Item)
 			if item.Code != common.InvalidCode {
 				err := clipboard.WriteAll(item.Code)

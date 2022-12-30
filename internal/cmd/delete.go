@@ -7,11 +7,11 @@ import (
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/fawni/asunder/internal/common"
+	"github.com/fawni/asunder/internal/database"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
-	"github.com/x6r/asunder/internal/common"
-	"github.com/x6r/asunder/internal/database"
 )
 
 var (

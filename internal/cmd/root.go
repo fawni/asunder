@@ -11,10 +11,10 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/fawni/asunder/internal/common"
+	"github.com/fawni/asunder/internal/database"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
-	"github.com/x6r/asunder/internal/common"
-	"github.com/x6r/asunder/internal/database"
 )
 
 type keymap struct {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/x6r/asunder/internal/cmd"
+	"github.com/fawni/asunder/internal/cmd"
 )
 
 func main() {

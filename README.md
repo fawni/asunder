@@ -2,9 +2,9 @@
 
 > Asunder, Sweet and Other Distress
 
-[![Latest Release](https://img.shields.io/github/release/x6r/asunder.svg)](https://github.com/x6r/asunder/releases)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/x6r/asunder/build.yml?logo=github&branch=master)](https://github.com/x6r/asunder/actions)
-[![Go Report Card](https://goreportcard.com/badge/github.com/x6r/asunder)](https://goreportcard.com/report/github.com/x6r/asunder)
+[![Latest Release](https://img.shields.io/github/release/fawni/asunder.svg)](https://github.com/fawni/asunder/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/fawni/asunder/build.yml?logo=github&branch=master)](https://github.com/fawni/asunder/actions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/fawni/asunder)](https://goreportcard.com/report/github.com/fawni/asunder)
 
 A pretty, little two-factor authenticaton _(2FA)_ client for the command line. üç°
 
@@ -14,14 +14,14 @@ A pretty, little two-factor authenticaton _(2FA)_ client for the command line. 
 
 ### Binaries
 
-Download a binary from the [releases](https://github.com/x6r/asunder/releases)
+Download a binary from the [releases](https://github.com/fawni/asunder/releases)
 page.
 
 ### Build from source
 
 Go 1.16 or higher required. ([install instructions](https://golang.org/doc/install.html))
 
-    go install github.com/x6r/asunder@latest
+    go install github.com/fawni/asunder@latest
 
 ## Usage
 

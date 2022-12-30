@@ -1,4 +1,4 @@
-module github.com/x6r/asunder
+module github.com/fawni/asunder
 
 go 1.16
 

@@ -5,10 +5,10 @@ import (
 	"database/sql"
 	"os"
 
+	"github.com/fawni/asunder/internal/common"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/sqliteshim"
-	"github.com/x6r/asunder/internal/common"
 )
 
 type DB = bun.DB

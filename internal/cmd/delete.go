@@ -77,7 +77,7 @@ func renderEntriesTable() {
 		os.Exit(1)
 	}
 
-	termenv.ClearScreen()
+	termenv.NewOutput(os.Stdout).ClearScreen()
 	t := table.NewWriter()
 	t.SetStyle(table.StyleLight)
 	t.SetOutputMirror(os.Stdout)

@@ -65,7 +65,7 @@ func startModel() error {
 	}
 
 	program := tea.NewProgram(m, tea.WithAltScreen())
-	if err := program.Start(); err != nil {
+	if _, err := program.Run(); err != nil {
 		return err
 	}
 
@@ -155,7 +155,7 @@ func setupModel() (Model, error) {
 
 	m := Model{List: list.New(items, list.NewDefaultDelegate(), 0, 0), Timer: timer.New(common.TTL)}
 	m.List.Title = "asunder"
-	termenv.SetWindowTitle(m.List.Title)
+	termenv.NewOutput(os.Stdout).SetWindowTitle(m.List.Title)
 	m.List.StatusMessageLifetime = 1200 * time.Millisecond
 	if len(items) > 0 {
 		m.List.AdditionalShortHelpKeys = func() []teakey.Binding {

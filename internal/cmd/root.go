@@ -49,6 +49,9 @@ func init() {
 }
 
 func Execute() {
+	output := termenv.NewOutput(os.Stdout)
+	defer output.Reset()
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

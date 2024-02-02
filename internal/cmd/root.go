@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/AlecAivazis/survey/v2"
 	teakey "github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/huh"
 	"github.com/fawni/asunder/internal/common"
 	"github.com/fawni/asunder/internal/database"
 	"github.com/muesli/termenv"
@@ -87,10 +87,16 @@ func promptPassword() {
 	common.Check(err)
 
 	var password string
-	err = survey.AskOne(&survey.Password{
-		Message: "Enter master password »",
-	}, &password)
-	common.CheckSurvey(err)
+	err = huh.NewForm(huh.NewGroup(
+		huh.NewInput().
+			Title("Enter master password").
+			Prompt(" ? ").
+			Inline(true).
+			Password(true).
+			Value(&password)),
+	).WithTheme(huh.ThemeCatppuccin()).Run()
+	common.Check(err)
+
 	if database.Hash(password).Text != k.Key {
 		fmt.Println("password does not match")
 		os.Exit(1)
@@ -100,33 +106,25 @@ func promptPassword() {
 }
 
 func initAsunder() error {
-	var qs = []*survey.Question{
-		{
-			Name:     "password",
-			Prompt:   &survey.Password{Message: "Enter a master password »"},
-			Validate: survey.Required,
-		},
-		{
-			Name:     "repassword",
-			Prompt:   &survey.Password{Message: "Re-Enter master password »"},
-			Validate: survey.Required,
-		},
-	}
-
-	var answers struct {
-		Pass   string `survey:"password"`
-		Repass string `survey:"repassword"`
-	}
-
 	fmt.Println("First time setup! You will be prompted for the master password everytime you use asunder.")
-	err := survey.Ask(qs, &answers)
-	common.CheckSurvey(err)
-	if answers.Pass != answers.Repass {
+	var pass, repass string
+	err := huh.NewForm(
+		huh.NewGroup(
+			huh.NewInput().Title("Enter a master password").Prompt("? ").Password(true).Value(&pass),
+			huh.NewInput().Title("Re-Enter master password").Prompt("? ").Password(true).Value(&repass),
+		),
+	).WithTheme(huh.ThemeCatppuccin()).Run()
+
+	if err != nil {
+		return err
+	}
+
+	if pass != repass {
 		fmt.Println("password does not match")
 		os.Exit(1)
 	}
 
-	secret := answers.Pass
+	secret := pass
 	if _, err := database.InitDB(); err != nil {
 		return err
 	}

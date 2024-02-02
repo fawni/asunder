@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/AlecAivazis/survey/v2"
+	"github.com/charmbracelet/huh"
 	"github.com/fawni/asunder/internal/common"
 	"github.com/fawni/asunder/internal/database"
 	"github.com/spf13/cobra"
@@ -22,6 +21,10 @@ var (
 			return addEntry()
 		},
 	}
+
+	username string
+	issuer   string
+	secret   string
 )
 
 func init() {
@@ -29,33 +32,23 @@ func init() {
 }
 
 func addEntry() error {
-	var qs = []*survey.Question{
-		{
-			Name:     "username",
-			Prompt:   &survey.Input{Message: "Enter your username »"},
-			Validate: survey.Required,
-		},
-		{
-			Name:     "issuer",
-			Prompt:   &survey.Input{Message: "Enter the issuer name »"},
-			Validate: survey.Required,
-		},
-		{
-			Name:     "secret",
-			Prompt:   &survey.Password{Message: "Enter TOTP secret »"},
-			Validate: survey.Required,
-		},
+	err := huh.NewForm(
+		huh.NewGroup(
+			huh.NewInput().Title("Enter your username").Prompt("? ").Value(&username),
+			huh.NewInput().Title("Enter your issuer name").Prompt("? ").Value(&issuer),
+			huh.NewInput().Title("Enter your TOTP secret").Prompt("? ").Value(&secret).Password(true),
+		),
+	).WithTheme(huh.ThemeCatppuccin()).Run()
+
+	if err != nil {
+		return err
 	}
 
-add:
-	var answers database.Entry
-	err := survey.Ask(qs, &answers)
-	common.CheckSurvey(err)
-	username, err := database.Encrypt(Key, answers.Username)
+	username, err := database.Encrypt(Key, username)
 	common.Check(err)
-	issuer, err := database.Encrypt(Key, answers.Issuer)
+	issuer, err := database.Encrypt(Key, issuer)
 	common.Check(err)
-	secret, err := database.Encrypt(Key, answers.Secret)
+	secret, err := database.Encrypt(Key, secret)
 	common.Check(err)
 
 	ctx := context.Background()
@@ -64,13 +57,23 @@ add:
 	if err != nil {
 		return err
 	}
-	fmt.Println("Done!")
 
 	var again bool
-	err = survey.AskOne(&survey.Confirm{Message: "Add another entry"}, &again)
-	common.CheckSurvey(err)
-	if again {
-		goto add
+	err = huh.NewForm(
+		huh.NewGroup(
+			huh.NewConfirm().
+				Title("Would you like to add another entry?").
+				Value(&again)),
+	).WithTheme(huh.ThemeCatppuccin()).Run()
+
+	if err != nil {
+		return err
 	}
+
+	if again {
+		username, issuer, secret = "", "", ""
+		return addEntry()
+	}
+
 	return nil
 }

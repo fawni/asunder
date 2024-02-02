@@ -3,8 +3,6 @@ package common
 import (
 	"fmt"
 	"os"
-
-	"github.com/AlecAivazis/survey/v2/terminal"
 )
 
 const TTL = 30
@@ -15,18 +13,6 @@ func Check(err error) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
-	}
-}
-
-func CheckSurvey(err error) {
-	if err != nil {
-		if err == terminal.InterruptErr {
-			fmt.Println("Interrupted")
-			os.Exit(1)
-		} else {
-			fmt.Println(err)
-			os.Exit(1)
-		}
 	}
 }
 

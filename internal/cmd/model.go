@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/atotto/clipboard"
@@ -25,7 +24,7 @@ type Item struct {
 
 func (i Item) Title() string { return i.Code }
 func (i Item) Description() string {
-	return fmt.Sprintf("%s (%s)", strings.Title(i.Issuer), i.Username)
+	return fmt.Sprintf("\x1b[1m%s\x1b[22m :: %s", i.Issuer, i.Username)
 }
 func (i Item) FilterValue() string {
 	if i.Code != common.InvalidCode {

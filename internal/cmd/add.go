@@ -71,7 +71,6 @@ func addEntry() error {
 	}
 
 	if again {
-		username, issuer, secret = "", "", ""
 		return addEntry()
 	}
 

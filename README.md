@@ -40,11 +40,6 @@ Delete entries:
 
     asunder delete
 
-## TODO
-
-- [ ] Export database
-- [ ] Import from other authenticators
-
 ## License
 
 [OSL-3.0](LICENSE)
